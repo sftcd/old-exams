@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>No title</title>
+  <meta name="generator" content="amaya 8.4, see http://www.w3.org/Amaya/" />
+</head>
+
+<body>
+<p></p>
+
+<p><b>Question 1.</b></p>
+
+<p><b>a) Describe how you would handle the following scenarios. For each
+case, provide your reasons.</b></p>
+<ul>
+  <li><b>you are a CS reserarcher and discover a buffer overrun vulnerability
+    in a standard web browser (5)</b></li>
+  <li><b>you are a programmer and discover, and validate an exploit for, a
+    vulnerability in your main competitor's product (5)</b></li>
+  <li><b>you are a system administrator in a large enterprise and hear about
+    a vulnerability for which there is no patch, and which potentially
+    affects many of your server systems (5)</b></li>
+</ul>
+
+<p>Marking scheme is the same for each. 2 points for a sensible description
+of the actions to take; 2 points for sensible justification and 1 point for
+extra detail or insight.</p>
+
+<p>For the 1st one a sample answer might cover:</p>
+
+<blockquote>
+  <p>Actions: check vulnerability databases to see if vulnerability is new,
+  check whether a workaround is possible and which versions of the browser
+  are affected, if source code is available develop a fix, write exploit code
+  to be sure the vulnerability is real, contact the maintainer/vendor of the
+  browser supplying all relevant information and give them time to respond
+  indicating the intent to publish the vulnerability, (an alternative would
+  be to contact a CERT)</p>
+
+  <p>Reasons: (same things in same order) vulnerabilities are often
+  discovered more than once, especially in browsers; typically not everyone
+  can update their browser from the affected versions so providing a
+  workaround (e.g. via configuration) is only fair (if its possible); clearly
+  its nicer to let people know which versions are affected as is developing a
+  fix; writing exploit code is arguably necesary since otherwise you can
+  never be sure how serious a vulnerability has been discovered, with buffer
+  overruns, it will normally be easy enough to get root; contacting the
+  maintainer/vendor with such a proposition is arguably a fair way to
+  proceed, given the propensity of vendors to sit on known security bugs for
+  extended periods, in any case the vulnerability will probably be
+  re-discovered, or will have already been discovered by the bad guys so
+  there's no real harm in publishing the exploit and the existence of the
+  exploit code will act as a spur to the maintainer/vendor.</p>
+</blockquote>
+
+<p>(Note that the approach above is not the only reasonable one, another
+would be to go via a CERT, or a vendor-driven process. The main thing is that
+the reasons given are cogent and self-consistent.)</p>
+
+<p><b>b) You are a working as a software architect in a small near start-up
+and are responsible for developing their software engineering standards and
+practices (e.g. coding standards, source code control etc.). Describe how you
+would handle security issues as part of this. (10)</b></p>
+
+<p>The answer should cover the following points or similar (0.5 points for a
+mention, 1 more for a good description).</p>
+<ul>
+  <li>Basic design documentation and source code control (versioning
+  etc.)</li>
+  <li>Ensuring that all design documents contain some sensible "security
+    considerations"</li>
+  <li>Ensuring that default value settings consider security</li>
+  <li>Access control (incl. physical) to design documentation and code</li>
+  <li>Security reviews at early and late stages in the development of new
+    functionality</li>
+  <li>Code reviews for security (as well as functionality)</li>
+  <li>Planning ahead for potential common criteria/ITSEC/Orange Book
+    evaluations</li>
+  <li>Use of static and dynamic code analysis tools to reduce bad code
+    (buffer overruns, unsafe system calls etc.)</li>
+  <li>Testing and QA directed at security, e.g. testing with "broken"
+    protocol drivers to ensure fail-safety</li>
+  <li>Ensuring installers etc. also have a security model</li>
+  <li>Ensuring user documentation describes what user's ought to know about
+    runinng applications relatively securely</li>
+</ul>
+
+<p><b>Question 2.</b></p>
+
+<p><b>You are a consultant who has been tasked to develop a next generation
+voting and polling scheme for a popular reality TV show. This system is one
+of the main revenue earner's which pays for the show. At peak usage, there
+may be millions of votes in a 24-hour period. The voting process continues
+for a number of weeks as contestants are eliminated. While there are no
+prizes for the voters, substantial sums of money are being bet (online and
+off-line) as to the outcomes The programme-maker has no relationship with the
+bookmakers taking bets on the outcomes.</b></p>
+<ul>
+  <li><b>Describe the main threats to and the set of security requirements
+    which you would have the system meet. [Note: focus on requirements here,
+    not on technologies.] (10)</b></li>
+</ul>
+
+<blockquote>
+  <p>4 points for identifying relevant threats (1 each more or less) and 6
+  for describing security requirements and not solutions</p>
+
+  <p>Some potential threats:</p>
+  <ul>
+    <li>Polling company (assuming they are a separate company) insider being
+      bought off to manipulate votes</li>
+    <li>Orchestrated web based voting (like a DDoS but where zombies vote
+      instead of attacking)</li>
+    <li>Distribution of voting links via SPAM emails or SMS messages
+      (potentially misleading ones too, e.g. send "click to vote for
+      <p>Alice" to Alice's home town but where actual link (or to-be-called
+      number) is for Bob.</p>
+    </li>
+    <li>Various web-server, SMS gateway, DB attacks from the Internet</li>
+    <li>Not a threat, but a relevant factor: bookmakers can be the attackers
+      as well as their clients!</li>
+  </ul>
+
+  <p>Some security requirements:</p>
+  <ul>
+    <li>Ensuring a separate polling company has well-defined and enforced
+      security policies and accountability mechanisms</li>
+    <li>"Hardening" the various servers against the current-known range of
+      likely network attacks</li>
+    <li>Providing data integrity mechanisms which cover voting data</li>
+    <li>Ensuring the confidentiality of voting data until voting process is
+      complete</li>
+    <li>Providing a way to analyse past votes in order to spot patterns
+      potentially indicative of misbehaviour</li>
+  </ul>
+</blockquote>
+<ul>
+  <li><b>Provide an outline design for the entire system, emphasising the
+    security model and components affecting security. (10)</b></li>
+</ul>
+
+<blockquote>
+  <p>The description should cover how SMS and Web based voting may occur and
+  include databases which are to be used. (Most likely in a block-diagram.)
+  The security model description demonstrate security services and mechanisms
+  which match the set of requirements (e.g. the use of SSL for web based
+  voting, some DB integrity mechanism, handling duplicate SMS based votes
+  etc.).</p>
+
+  <p>Marking scheme is 1-2 points for an overview (block diagram etc.) then
+  1-2 points for each requirement which is covered, and an overall mark of
+  1-2 points for general security awareness.</p>
+</blockquote>
+<ul>
+  <li><b>Describe how you would test the security of the implemented system,
+    prior to its being used for the show (5)</b></li>
+</ul>
+
+<blockquote>
+  <p>The answer should cover a mixture of code review, security analysis,
+  internal testing, stress testing and tiger-team testing. Marking scheme
+  here is more or less one point per useful aspect described.</p>
+</blockquote>
+
+<p><b>Question 3.</b></p>
+
+<p><b>Describe in detail how scaling issues affect a practical key management
+scheme (e.g. Kerberos, S/MIME, IKE, or TLS). (15)</b></p>
+
+<p>Marking scheme: generally correct description of the chosen scheme: 5
+marks, identifying some relevant scaling issues 1 mark for each good
+description (up to 7), 3 additional marks for overall depth of description,
+correctness and insight.</p>
+
+<p>Possible scaling issues for say Kerberos (others are similar):</p>
+<ul>
+  <li>9am "rush"/busy-hour processing</li>
+  <li>single point of failure (AS)</li>
+  <li>replication of KDC</li>
+  <li>size of user DB (and access times etc)</li>
+  <li>number of applications to manage (DCE approach of server key)</li>
+  <li>audit analysis tools more important when many records created</li>
+  <li>clock sync. requirement gets harder the more hosts there are</li>
+  <li>managing inter-realm kerberos is harder, but realms make sense when you
+    scale</li>
+</ul>
+
+<p><b>Compare the use of cryptographic primitives (e.g. signing, MACing,
+digesting) in your chosen scheme with another such scheme. (10)</b></p>
+
+<p>2 marks for each correctly described aspect, not already mentioned above,
+2 additional marks for overall correctness, coverage and insight.</p>
+
+<p>E.g. comparing Kerberos with TLS:</p>
+<ul>
+  <li>Kerberos default algorithm selections are older (DES in RFC1510, not
+    3DES)</li>
+  <li>TLS (mainly) uses asymmetric crypto for authentication whereas Kerberos
+    mainly uses shared secrets</li>
+  <li>TLS derives many keys from the pre-master secret, Kerberos just has
+    session and sub-session keys</li>
+  <li>Kerberos' use of digesting requires the entire buffer to be in memory,
+    whereas TLS can work without requiring this</li>
+  <li>TLS has a session-resume model, whereas Kerberos doesn't</li>
+  <li>Kerberos tickets and keys (almost always) get cached to disk whereas
+    TLS session state is not (usually)</li>
+</ul>
+</body>
+</html>

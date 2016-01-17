@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+  <title>CS 4D4 - Security Exam questions and answers 2006</title>
+  <meta name="generator" content="amaya 9.2.1, see http://www.w3.org/Amaya/"
+  />
+</head>
+
+<body>
+<h1>CS 4D4 - Security Exam questions and answers 2006</h1>
+
+<p>stephen.farrell@cs.tcd.ie</p>
+
+<p>All questions carry 20 marks, the number of marks for each sub-part is
+indicated in parenthesis.</p>
+
+<p>I assume that they have to do 5 from 8 questions, including at least 2
+from this section.</p>
+
+<h2>Question 5</h2>
+
+<p><b>You are a developer working for a software product development company.
+They are starting work on a major new release of their main product which has
+been on sale for a number of years. The product is for running web-based
+communities, somewhat along the lines of flickr, i.e. the user's of the
+product are the administrators of such community sites. You are tasked with
+looking after security for this new release. (Note: for the purposes of this
+question, describing how you would carry out the security analysis matters
+much more than a description of the product.</b></p>
+
+<p><b>(a) Describe how you would approach analysing the existing security and
+privacy aspects of the product. (10)</b></p>
+
+<p>The important thing is that they say that you should take a risk analysis
+approach, ranking vulnerabilities by e.g. impact and probability of
+occurrence and then further looking at the high/high cases. That, or an
+equivalent approach, is worth 3 marks, depending on how well its
+described.</p>
+
+<p>There's one mark for a meaningful mention of privacy issues (mainly
+becuase some may omit it entirely, so this is kind of a punishment for
+that)</p>
+
+<p>Other things that get marks when properly discussed/mentioned (1 each, up
+to a max of 4; with 2 more for overall impression):</p>
+<ul>
+  <li>doing a black-box security review of the product</li>
+  <li>design reviews</li>
+  <li>code reviews</li>
+  <li>talking to developers and users of earlier versions</li>
+  <li>establishing how existing design documents and actual code match up</li>
+  <li>looking at competing products to see what security measures they use
+    and how to do better or at least as good</li>
+  <li>performing the risk analysis from the point of view of the end-user, as
+    well as the customer (the community site admin)</li>
+  <li>considering the privacy expectations of the end-users and ensuring that
+    e.g. archives etc. don't give too much information (e.g. real email
+    addresses should not be exposed)</li>
+</ul>
+
+<p><b>(b) Name and briefly explain 3 significant vulnerabilities which would
+be likely to be present in recent versions of the product. Explain the
+countermeasures you would select to handle these. (10)</b></p>
+
+<p>There are 3 marks for each, one for naming a significant vulnerability,
+one for a countermeasure, and one for how well its described. And a single
+mark for overall goodness. Possible vulnerabilities/counters that could be
+used include:</p>
+<ul>
+  <li>masquerade as another user - proper account/session management &amp;
+    use of TLS</li>
+  <li>sybil attacks - logging IPs etc. &amp; imposing a limit on number of
+    accounts </li>
+  <li>including/attaching malware to messages/images - incorporate some
+    scanning capability and a pluggable scanner framework</li>
+  <li>URL guessing often allows access to unauthorised parts of the
+    application - build in a proper access control model and enforce it</li>
+  <li>password resets frequently vulnerable - train human operators, don't
+    allow simple unauthenticated email to change contact info. for password
+    reset without human intervention</li>
+  <li>DoS based on disk filling - impose rate and size limits, use circular
+    archives where appropriate</li>
+  <li>DoS based on network attacks - ensure product runs on "hardened"
+    version of OS with only minimal services running</li>
+  <li>All/any of the usual code quality problems, buffer overruns, etc. -
+    code review, static analysis tools, use of type-safe languages if
+  possible</li>
+</ul>
+
+<h2>Question 6</h2>
+
+<p><b>(a) What is the purpose of a public key infrastructure (PKI)? In other
+words, what security requirements does a PKI aim to meet? (5)</b></p>
+
+<p>One mark for overall correctness, one each for mentions of things like:</p>
+<ul>
+  <li>solving N^2 problem of key distribution via TTP</li>
+  <li>binding names and other info to public keys </li>
+  <li>imposing technical requirements on key management (e.g. x.509 policy
+    stuff, key lengths etc.)</li>
+  <li>supporting key life cycles (generation, registration, use, archiving,
+    revocation...)
+    <ul>
+      <li>perhaps with constraints on each stage </li>
+      <li>individual points above can all be worth one mark</li>
+    </ul>
+  </li>
+  <li>provide a standard basis for applications/protocols to use asymmettric
+    crypto</li>
+  <li>provide a secure way to support inter-domain operation (even if it
+    doesn't really scale well enough;-)</li>
+  <li>provide a standard, secure way to discover public keys (and e.g.
+    certificate paths)</li>
+</ul>
+
+<p><b>(b) Describe how the XML Key Management System (XKMS) supports the
+requirements you identified in part (a). (5)</b></p>
+
+<p>Basically this is an opportunity for a blow-by-blow description of XKMS
+and how it supports PKIs. Straight marks from 5 for how well they do this.
+They ought e.g. to distinguish X-KRSS from X-KISS, to say that locate !=
+validate and that X-KRSS supports registration, revocation etc.</p>
+
+<p><b>(c) What are some of the advantages and/or disadvantages of using XKMS
+over a "pure" X.509 based PKI? (5)</b></p>
+
+<p>One mark for each correct thing given. Possible points include:</p>
+<ul>
+  <li>(pro) puts most "trust" complexity into the server</li>
+  <li>(pro) supports xml applications "natively"</li>
+  <li>(con) supports xml application "natively" (if defended properly via
+    valid criticism of xml!)</li>
+  <li>(con) client doesn't clearly know the basis for "trust" </li>
+  <li>(pro) client doesn't clearly know the basis for "trust" (real
+    applications don't care)</li>
+  <li>(con) responder has to be on-line for anything to work</li>
+  <li>(pro) no concept of non-repudiation</li>
+  <li>(pro) no explicit encoding of "trust" parameters enforced, can all be
+    encoded in service URL</li>
+</ul>
+
+<p><b>(d) Give an example of when you might choose to use an XKMS bsaed PKI
+and say why. (5)</b></p>
+
+<p>The example should be convincing (1), clearly described (1) and justified
+(3).</p>
+
+<p>Good examples will mainly be xml applications that could make use of
+xmlsig, so basically anything layered on SOAP that could require a signature
+- say any kind of payment application. Justificiation should either repeat
+some of the pros from (c) or else add new ones. New ones are better.</p>
+
+<h2>Question 7</h2>
+
+<p><b>(a) Describe a practical key management scheme (e.g. the SSL/TLS
+handshake or Kerberos or S/MIME), noting the advantages/pitfalls of your
+chosen scheme. (10)</b></p>
+
+<p>Straight chance to describe a scheme (almost all of 'em pick TLS here).
+For TLS they should include the basics of the handshake (2), the details of
+whose key is used where (2) and mention of the application record crypto (2).
+Other aspects like the fact that client authentication exists and the ways
+that revocation can be supported (OCSP, CRLs) get one each, with 2 more marks
+for overall goodness.</p>
+
+<p><b>(b) Describe some of the issues that might arise when configuring
+clients or servers for your chosen scheme. (5)</b></p>
+
+<p>One mark for each thing like those below and one for overall goodness:</p>
+<ul>
+  <li>server key generation</li>
+  <li>server certification request creation </li>
+  <li>dealing with a CA or making a self-cert</li>
+  <li>choosing allowed/disallowed ciphersuites</li>
+  <li>interacting with authorizatoin (e.g. set URLs where parts of cert are
+    made available)</li>
+  <li>configuring session resumption </li>
+  <li>anti-DoS limits (not that any standard code supports that now
+  afaik)</li>
+  <li>revocation information sources/options (OCSP, CRLs...)</li>
+  <li>trusted roots in clients (and servers!)</li>
+</ul>
+
+<p><b>(c) How might mis-configuration might cause security problems for this
+scheme? (5)</b></p>
+
+<p>Same as the last part.</p>
+<ul>
+  <li>unprotected/easily modified trusted root list =&gt; game over</li>
+  <li>lack of revocation support =&gt; opens a window, e.g. for fired
+    employees</li>
+  <li>weak (aka export) ciphersuites exist &amp; shouldn't be allowed =&gt;
+    eavesdropping</li>
+  <li>bogus revocation or certificate sources =&gt; TCP timeout =&gt; DoS on
+    server if done right (details here might get some bonus points if they
+    clearly know what they're on about)</li>
+  <li>badly configured interface with authorization (say in httpd.conf) =&gt;
+    wrong pages open/closed</li>
+  <li>a wrong choice for X.509 initial policy set might cause many certs to
+    be rejected (no-one's going to have read rfc3280 that closely though - if
+    they do they get a bonus)</li>
+</ul>
+
+<h2>Question 8</h2>
+
+<p><b>In the expectation that broadband bandwidth will increase sufficiently
+in the coming years, you decide to develop a startup company to support
+viewing movies over the Internet. Your initial target is to develop a system
+that supports near-video-on-demand, where some minutes may elapse between the
+time a movie is ordered and when the movie is ready for viewing (i.e. has
+been downloaded). Clearly, payments processing, security, privacy and rights
+management are important aspects of this system.</b></p>
+
+<p><b>(a) Provide an overview of the system (including. e.g. a network
+diagram) focusing on the security components. (5)</b></p>
+
+<p>Good overview (1), including network diagram (1), showing secutity
+components, e.g. firewalls (1). Last two points for overall goodness and e.g.
+showing redundancy, use of content management system, split DNS, properly
+showing interface with payments system etc.</p>
+
+<p>Alternatively, they might equally validly focus on the DRM aspects (I
+expect not) in which case they ought to show things like the content-owner,
+distributor and maybe bits of infrastructure like TPMs etc.</p>
+
+<p><b>(b) What do you consider to be the 3 most important vulnerabilities (in
+terms of probability of occurrence and impact) for this system, as described
+in the answer to part(a)? Specify a countermeasure aimed at each. (5)</b></p>
+
+<p>Overall goodness gets two marks. Things like those below get one each:</p>
+<ul>
+  <li>Unauthorized superdistribution of content - leverage platform DRM
+    facilities is ok, but even better (opinion!) is to watermark for
+    traitor-tracing and separately monitor for torrents etc. that match. Real
+    problem is that there is no truly effective countermeasure, but if they
+    do say that, then they get a bonus!</li>
+  <li>Unauthorized/free access - depending on how they've described a
+    payments model you might limit access to an ISP's DSL customers, when
+    directly connected, or else (or additionally) require registration, login
+    and use of some secure pipe for authorized/paid-up users. Any such scheme
+    has vulnerabilities and fairly obvious countermeasures.</li>
+  <li>Network DoS - counters are the usual things like redundancy, cookies
+    etc.</li>
+  <li>Application layer DoS, e.g. requesting 10^6 movies from a real account
+    - application layer rate limits</li>
+</ul>
+
+<p><b>(c) Assuming that the countermeasures you mentioned in part(b) are
+implemented, briefly describe the main operational security policies that the
+system adminstrators ought to follow, for example, if you included auditing
+as a countermeasure above, say how the audit trails/logs should be processed.
+(5)</b></p>
+
+<p>As above, but correct focus on operational issues is worth a couple of
+marks. After that, one each for things like:</p>
+<ul>
+  <li>Logs should be usable - in various ways, e.g. times in whack,
+    centralizable, queriable etc.</li>
+  <li>Monitoring policies should define what's suspisicous and what's not
+    etc. when on the lookout for superdistribition</li>
+  <li>Three should be some consideration of an appeals process etc in the
+    event of disputes</li>
+  <li>Arranging with other content sites and ISPs to jointly monitor for
+    unauthorized superdistribution in whatever ways are possible, e.g. by
+    introducing bogus content, attractively named and watching for its
+    reappearance, or by semantically modifying real content (e.g. delete an
+    aspect of a scene) to detect the superdistribution. While this is not
+    necessarily a highly effective, nor desirable, approach, given that it is
+    proposed by DRM proponents, it would be worth a mark!</li>
+  <li>There should be many checks on employee behaviour since insiders are
+    usually where such systems can break down with worst impact, e.g. if an
+    insider removed access controls and totally opened up the entire library
+    at a lower layer (e.g. via some DB api), then the entire system is
+    compromised. Operationally, IDS type monitoring might show up that this
+    has happened (as well as DB logs etc.)</li>
+</ul>
+
+<p><b>(d) Given all of the above, how might an attacker still successfully
+abuse your system? (5)</b></p>
+
+<p>Straight marks-from-5 with credit for inventiveness. Possible ways might
+include:</p>
+<ul>
+  <li>injection of unlicensened content to get MPAA annoyed with the
+  system</li>
+  <li>recoding movies to remove traitor-tracing watermarks (always a
+    possibility)</li>
+  <li>redistributing versions via another medium, i.e. DVD</li>
+  <li>mount a directed phishing attack to find actual users in order to
+    access the movie data so as to cut DVDs or other wise redistribute</li>
+  <li>spyware on real user's hosts could access a movie and redistribute
+    (albeit at the user's uplink rate, but the spyware isn't in a hurry)</li>
+</ul>
+
+<p></p>
+</body>
+</html>

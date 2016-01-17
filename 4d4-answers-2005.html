@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+       "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <title>CS-4D4 Security Exam Questions 2005</title>
+  <meta name="generator" content="amaya 8.4, see http://www.w3.org/Amaya/" />
+</head>
+
+<body>
+<h1>CS-4D4 Security Exam Questions 2005</h1>
+
+<p>stephen.farrell@cs.tcd.ie</p>
+
+<p>All questions carry 20 marks, the number of marks for each sub-part is
+indicated in parenthesis.</p>
+
+<p>I assume that they have to do 5 from 8 questions, including at least 2
+from this section.</p>
+
+<h2>Question 5</h2>
+
+<p><b>(a) Explain how you would approach analysing the security of systems?
+State how you would analyse vulnerabilities, select corresponding
+countermeasures, and (given that there is always limited time available to do
+security analysis), explain the criteria you would use in order to decide
+where to expend your analysis effort. (10)</b></p>
+
+<p>Things that get marks when properly discussed/mentioned (up to a max of 8;
+with 2 more for overall impression):</p>
+<ul>
+  <li>analysing risk (1) probably at both early and late stages of
+    development (1)</li>
+  <li>the varying impact (1) and probabilities of vulnerabilities (1)</li>
+  <li>secuity testing/tiger teams (1)</li>
+  <li>code reviews(1)</li>
+  <li>appropriate countermeasure examples (1 each)</li>
+  <li>knowledge of design (1) versus knowledge of development environment (1)
+    and implementation (1) will determine where an individual's effort is
+    best directed</li>
+  <li>effort is almost always best directed at high probability, high impact
+    vulnerabilities (1)</li>
+</ul>
+
+<p><b>(b) Name and briefly explain 3 significant vulnerabilities and
+corresponding countermeasures which commonly occur in real systems today.
+(5)</b></p>
+
+<p>Marking scheme: 1 for each reasonable vulnerabillity and appropriate
+countermeasure up to max 4. 1 extra if they give a really nice example</p>
+
+<p>Significant vulnerabilities include:</p>
+<ul>
+  <li>buffer overruns</li>
+  <li>insecure defaults</li>
+  <li>not turing-on TLS </li>
+  <li>databases on non-hardened hosts</li>
+  <li>various forms of DoS</li>
+</ul>
+
+<p>Countermeasures include:</p>
+<ul>
+  <li>TLS, Kerberos etc</li>
+  <li>Code review/code analysis tools</li>
+  <li>Risk analysis</li>
+  <li>SYN cookies and other anti-DoS measures</li>
+</ul>
+
+<p><b>(c) Deploying a security countermeasure can introduce new
+vulnerabilities. Describe a realistic scenario in which a countermeasure
+causes a new vulnerability which is actually worse than the vulnerability
+that motivated deployment of the countermeasure. (5)</b></p>
+
+<p>Marking scheme: 0 if they're incorrect; otherwise simply marks from 5 with
+a preference for insightful, detailed and generally technically complex
+things.</p>
+
+<p>An not-too-good example might be deployment of logging which fills the
+disk which deny's service</p>
+
+<p>A nice example is profiled airport screening and how it provides an oracle
+for terrorists to determine anti-terrorist profiles; a good description of
+Bleichenbacher or related side-channel attacks would be fine too.</p>
+
+<h2>Question 6</h2>
+
+<p><b>(a) Briefly explain each of the three main security properties which
+are desirable for hash functions.(5)</b></p>
+
+<p>They should define collision resistance; pre-image and 2nd pre-image
+resistance. One mark for each and two for how well they define them.</p>
+
+<p>If someone starts offering properties like "random looking output", "all
+input bits having equal effect" etc then they get a half mark for each that's
+properly described.</p>
+
+<p><b>(b) State three examples of how hash functions are used in security
+protocols. (5)</b></p>
+
+<p>One mark for each, plus two more for good examples and/or conequences.</p>
+
+<p>Uses include: key derivation, MACing (HMAC), challenge-response schemes,
+hash-as-name, chaining, inside signatures, etc.</p>
+
+<p><b>(c) What are the effects of the recently discovered weaknesses in hash
+functions? (5)</b></p>
+
+<p>The headline is that MD5 has demonstrated collisions at about 2^40
+complexity and SHA-1 has a credible claim that collisions are 2^69 work and
+not 2^80 as expected. Getting that right gets 3 marks.</p>
+
+<p>Two additional marks for how well they talk about consequences (e.g. HMAC
+ok, signature with a signing oracle is bad, Lenstra's generated x.509
+collision) etc.</p>
+
+<p><b>(d) In a case where a hash algorithnm with a known weakness has to be
+used (e.g. for legacy support reasons) describe a way to mitigate those
+weaknesses. (5)</b></p>
+
+<p>Straight marks from 5 for how well they do this. </p>
+
+<p>Most likely good answer is that a signer-chosen random value (a nonce)
+ought be included early on in the to-be-signed data for long lived
+signatures, like those in X.509 certificates.</p>
+
+<p>Alternatives might include xmsig equivalent stuff (e.g. a nonce in the
+IDREF); using the ASN.1 AlgorithmIdentifier field to contain an IV or
+eqiuvalent.</p>
+
+<p>If someone sensibly discusses how to roll out a new, better algorithm then
+they might get up to 3 marks.</p>
+
+<h2>Question 7</h2>
+
+<p><b>(a) Describe the workings of a practical key management scheme (e.g.
+the SSL/TLS handshake or Kerberos or S/MIME), noting the advantages/pitfalls
+of your chosen scheme. (10)</b></p>
+
+<p>This is a straight descriptive answer with 6 marks for correct description
+and 1 for each advantage/pitfall.</p>
+
+<p>Taking TLS as an example the answer ought to describe the handshake
+protocol, at least for the server-authenticated case. Covering that well gets
+5 marks, with an additional mark if the anonymous D-H or client-authenticated
+variants are described.</p>
+
+<p>Advantages/pitfalls here might include:</p>
+<ul>
+  <li>ubiquity of the implementation</li>
+  <li>many different interoperable implementations</li>
+  <li>easy to integrate for socket applications</li>
+  <li>only client input to pre-master secret generation</li>
+  <li>no perfect-forward-secrecy</li>
+  <li>only (so far) for connection-oriented applications (a bonus mark if
+    they know about DTLS)</li>
+  <li>still includes "export" grade ciphersuites</li>
+</ul>
+
+<p><b>(b) How do scaling issues affect your chosen protocol in terms of the
+numbers of each of the folowing: clients, servers and "domains." For S/MIME
+or TLS a "domain" can be considered to be a given CA's public key
+infrastructure. For kerberos a "domain" is a kerberos realm (or a single
+KDC). (10)</b></p>
+
+<p>Overall there's 1 mark for each well-described scaling factor, up to 7
+plus 3 for the overall answer.</p>
+
+<p>Still assuming TLS, here are a number of factors they could use:</p>
+
+<p>Clients: distribution of new root CA information gets hard; controlling
+allowed ciphersuites and other parameters gets hard; providing access to CRLs
+or OCSP responders gets hard and those servers get overloaded; eventually you
+hit multiple implementations (e.g. IE, Mozilla, Wince, etc.) and have to
+handle different valid client configurations; CRLs get big.</p>
+
+<p>Servers: simple performance since TLS is CPU intensive (load balancing
+helps, as do crypto accellerators); use of HTTP1.0 is problematic since new
+TLS sessions will be constructed very often; if a server re-boots then lots
+of expensive-to-build state information is lost in one go; mixing TLS with
+some forms of IP load balancing is hard since the TLS session state has to be
+shared; CRLs get big.</p>
+
+<p>Domains: cross-certification makes it harder for relying parties to access
+CRLs or OCSP responders; cross-certificates make path construction harder
+since certificate retrieval is harder; many TLS implementation don't properly
+handle cerificate paths.</p>
+
+<h2>Question 8</h2>
+
+<p><b>You are a system designer who has been tasked to design a web-based
+insurance quotation system. The main functionality of the system is to allow
+users on the Internet to enter their details on a set of web forms, and to
+then get a number of quotations for insurance from a set of different
+insurance companies. If the user wishes to accept one of the quotations, then
+the system allows them to purchase the policy. The system is to be operated
+by a new company which will be owned by the set of insurance companies who
+are participating in the system, but this company has to be operated as a
+separate entity for regulatory reasons. The quotation engines (the sotware
+which maps from user information to an actual quote) are run on systems
+inside each insurance company. This is done to protect proprietary company
+information and also to allow each compamy the flexibility to tailor quotes,
+e.g. by making "special offers". Initially the system will only handle car
+insurance, but it may be extended later on to include home and health
+insurance (you need to decide the extent to which you include support for
+these potential extensions).</b></p>
+
+<p><b>(a) Provide an overview of the system (including. e.g. a network
+diagram). (5)</b></p>
+
+<p>Providing a good diagram identifying the client, the Internet ("cloud"),
+the web server, database, the insurance company quotation engines (as being
+separate) and defining their basic functionality gets 3. Including an
+attacker, some privacy considerations and/or ancilliary systems like
+managment clients, (split-)DNS, firewalls and payments systems gets the other
+2.</p>
+
+<p><b>(b) What do you consider to be the 3 most important vulnerabilities (in
+terms of probability of occurrence and impact) for this system, as described
+in the answer to part(a)? Specify a countermeasure aimed at each. (5)</b></p>
+
+<p>One for each relevant vulnerability plus countermeasure and 2 for the
+overall response (less if the chosen vulnerabilities aren't a big deal).</p>
+
+<p>Possible vulnerablities/countermeasures:</p>
+<ul>
+  <li>Database stealing/putting DB behind f/w on hardened box</li>
+  <li>Session or user-data stealing/running over TLS with hard-to-guess
+    cookies or POSTDATA</li>
+  <li>Installing trojan s/w on the web server/hardening the server, checking
+    logs, etc.</li>
+  <li>Phishing attack/either don't have logins or else include a
+    user-recognisable stateful element to login ("e.g. last login on
+    Thursday", "Hi Stephen" before pwd entry)</li>
+  <li>Re-use of insecure user password value/Running crack or using alternate
+    and/or 2nd authentication factor (e.g. picking faces; homephone; d-o-b
+    etc).</li>
+</ul>
+
+<p><b>(c) Assuming that the countermeasures you mentioned in part(b) are
+implemented, briefly describe the main operational security policies which
+the system adminstrators ought to follow, for example, if you included
+auditing as a countermeasure above, say how the audit trails/logs should be
+processed. (5)</b></p>
+
+<p>One mark each for things like the following with two marks for overall
+goodness:</p>
+<ul>
+  <li>Describing how administrators have privileged access to the application
+    and logs; Each different type of logging is treated separately for
+    marking purposes, so if they separately describe how to handle firewall
+    logs and database logs they can points for each.</li>
+  <li>Describing a way that an alert can be generated by the system and
+    routed to SMS or Blackberry via SNMP or email</li>
+  <li>Mentioning subscribing to security services that will monitor the
+    network</li>
+  <li>Having a terms &amp; conditions (user agreement) that can be presented
+    to the user</li>
+  <li>Ongoing and periodic review of the systems' configuation (e.g.
+    occasional check that no-one's listening on the smtp port)</li>
+  <li>Running and checking status of an IDS or similar host-specifc tools</li>
+</ul>
+
+<p><b>(d) After the system has been operating for some time, a new insurance
+company enter this market, but do not take part in the web-based quotation
+system. This new insurance company hire some bad-guys to try to reduce the
+amount of buisness being done via our system. Describe how those bad-guys
+might attack the system. (5)</b></p>
+
+<p>Straight marks from 5, with a preference given to sneaky, technically
+clever attacks.</p>
+
+<p>Possible attacks:</p>
+<ul>
+  <li>Start by analysis of the system components (e.g. figure out which OSes,
+    servers etc. ala netcraft)</li>
+  <li>DDoS the system from some peer2peer network or elsewhere </li>
+  <li>Try the usual range of SQL insertion style attacks</li>
+  <li>DNS Poisoning against the site itself or more interestingly the
+    quotation engine or payments sites</li>
+  <li>Swamp the "support" email address/web pages with nonsense</li>
+  <li>Analyse the application to find user data which breaks the quotation
+    engine and then feed variants of that in frequently</li>
+  <li>Setup a phoney system with a similar DNS name ala paypa1.com, probably
+    using iDNS these days</li>
+  <li>Get a digger and break the power/ISP connections outside the door</li>
+  <li>If the servers are hosted, then try to get access to the hosting site
+    (e.g. buy service from the hosting agency) and once physicaly or
+    virtually inside, mount various LAN-based attacks on the servers (e.g.
+    mess around with ARP, suck out the web-server's DB login password
+  etc.)</li>
+  <li>Find a business with a similar name or other trademark and pay them to
+    sue over trademark infringement</li>
+  <li>Try to get the server listed in anti-spam or equivalent lists</li>
+  <li>Pay google and other search engines for the relevant search
+    keywords/banners</li>
+  <li>Email dubious content (e.g. porn, messages discrediting the insurance
+    companies) into the site and then report inappropriate activity to the
+    press</li>
+</ul>
+</body>
+</html>

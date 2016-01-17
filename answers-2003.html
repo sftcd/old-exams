@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>A</title>
+  <meta name="generator" content="amaya 7.0, see http://www.w3.org/Amaya/" />
+</head>
+
+<body>
+<h1>Sample solutions for 2003 exam for NDS106 Unit 1 (Security).</h1>
+
+<p>Stephen Farrell (<a
+href="mailto:stephen.farrell@cs.tcd..ie">stephen.farrell@cs.tcd.ie</a>)
+2003-02-20</p>
+
+<h2>Question 1.</h2>
+
+<h2>1a. Describe the 1988 Internet worm and its effects. In particular,
+describe, in detail, the main ways in which the worm propogated and explain
+what caused the worm to disrupt the network.</h2>
+
+<p>Marking scheme: 10 points available</p>
+
+<p>3 Points for overall correctness/clarity of description; thereafter
+inclusion of each of the points below (from Spafford's report) gains a
+half-point to a max of 6 points; clear errors (e.g. describing the worm as a
+virus) incur a negative 1/2 point; 1 additional point for relevant, correct
+things I haven't mentioned</p>
+<ul>
+  <li>The November 1988 Internet worm was nicely and fully described by
+    Spafford in his report titled "The Internet Worm Program: An
+  Analysis"</li>
+  <li>The program was a worm and not a virus since it didn't infect any other
+    programs</li>
+  <li>The concept of a worm program that spreads itself from machine to
+    machine was apparently first described by John Brunner in 1975 in his
+    classic science fiction novel "The Shockwave Rider"</li>
+  <li>In 1979-1981, researchers at Xerox PARC built and experimented with
+    worm programs. They reported their experiences in an article in 1982 in
+    Communications of the ACM.</li>
+  <li>The worm infected Sun Microsystems Sun 3 systems, and VAX computers
+    running variants of 4 BSD1 UNIX</li>
+  <li>The weaknesses exploited had been well known but the attack still
+    caused great surprise</li>
+  <li>Initial workarounds included renaming the C compiler</li>
+  <li>Once infected, all a host's CPU cycles were ultimately consumed by the
+    worm which effectively disconnected that host from the Internet</li>
+  <li>The worm code was "captured" and reverse-enigineered/de-compiled</li>
+  <li>The worm didn't actually do specific damage to hard drives</li>
+  <li>Methods/aspects of propogation (1/2 point each) included: 
+    <ul>
+      <li>sendmail DEBUG option allowed script execution giving a shell then
+        used to suck over the worm</li>
+      <li>fingerd gets buffer overrun</li>
+      <li>.rhosts files scanned then used</li>
+      <li>/etc/passwd used to guess passwords to break into other accounts on
+        the host (to presumably get other .rhosts files etc)</li>
+      <li>optimised password guessing</li>
+      <li>it tried password=variation of account-name</li>
+      <li>list of "favorite" passwords</li>
+      <li>use of /etc/dict and variations for password guesses</li>
+      <li>/etc/hosts used to find nearby hosts to attempt to infect</li>
+      <li>from-host started listener on random socket awaiting random
+        challenge (to be harder to spot)</li>
+      <li>the to-host compiler was used to compile the vector program which
+        was then executed and which sent back the challenge string to the
+        from-host's listener process on the appropriate socket</li>
+      <li>the from-host then sent the remaining code</li>
+      <li>the worm built a data structure in memory of known hosts and their
+        status (e.g. infected)</li>
+      <li>netstat used to find connected hosts</li>
+      <li>random subnet-local addresses were tried</li>
+    </ul>
+  </li>
+  <li>The new worm on the infected host proceeded to
+    &#x2018;&#x2018;hide&#x2019;&#x2019; itself by (1/2 point each): 
+    <ul>
+      <li>obscuring its argument vector,</li>
+      <li>unlinking the binary version of itself, and</li>
+      <li>killing its parent (the $$ argument in the invocation).</li>
+      <li>It then read into memory each of the worm binary files, encrypted
+        each file after reading it, and deleted the files from disk.</li>
+      <li>It periodically forked and then killed the parent to get a
+        different PID (but with a bug)</li>
+    </ul>
+  </li>
+  <li>The worm checked whether other worms were running on this host and if
+    so, exited in most cases (6/7)</li>
+  <li>Some worm instances became immortal (1/7)</li>
+  <li>The worm attempted to send an UDP packet to the host ernie.berkeley.edu
+    probably to deflect blame</li>
+  <li>The reasons why the worm used too much CPU include (1/2 point each as
+    usual): 
+    <ul>
+      <li>Incorrect logic caused the worm to always try to infect some
+        LAN-local host whenever a non-existent host was tried (and
+      failed)</li>
+      <li>Code to limit the number of instances per host was buggy</li>
+      <li>Password cracking code was supposed to exit/sleep but didn't due to
+        buggy code (a loop counter not being incremented)</li>
+    </ul>
+  </li>
+  <li>The local &#x2018;&#x2018;Worm port&#x2019;&#x2019;&#x2014; 23357 was
+    used to play a live/die protocol to thin out instances of worms on a host
+    (but with bugs)</li>
+</ul>
+
+<h2>1b. Explain how current networks and applications might be vulnerable to
+similar types of attack, in particular how web services (SOAP etc) might
+enable such attacks.</h2>
+
+<p>Marking scheme: 5 points available</p>
+
+<p>2 points for overall corrctness/clarity; 1/2 point (to max 3) each for a
+mention of list elements below; -1/2 point for each obviously
+incorrect/contradictory point made.</p>
+<ul>
+  <li>tunneling over port 80/HTTP</li>
+  <li>HTTP POST data</li>
+  <li>HTTP GET parameters</li>
+  <li>naming some known web server vulnerabilities (e.g. nimda)</li>
+  <li>mentioning ws-routing (SOAP routing)</li>
+  <li>SOAP messages including redundant data (in HTTP header and SOAP
+  envelop)</li>
+  <li>unknown whether firewalls can process SOAP messages sufficicently
+  fast</li>
+  <li>as above but s/fast/with sufficient policy granularity/</li>
+  <li>ubiquity of port 80 listeners</li>
+  <li>networks contain web servers and socket listeners (e.g. registry) that
+    are not known to their administrators</li>
+</ul>
+
+<h2>1c. Describe two other major, current types of threat (accidental or
+deliberate, passive or active) and explain the type of countermeasures that
+can practically (as opposed to theoretically) be put in place against
+each.</h2>
+
+<p>Marking scheme: 10 points available</p>
+
+<p>They have to talk about two other threats (probably mail- and
+http-borne-malware like "I love you" and "Nimda" or perhaps "SQL slammer").
+For each of those:</p>
+<ul>
+  <li>They get 0,1 or 2 points for a clear, correct description of the
+    vulnerability and the exploit (more or less one for each)</li>
+  <li>They get 0,1 or 2 points for a clear, correct description of two
+    effective countermeasures (or a very detailed description of one
+    countermeasure if that counter is sufficient in itself)</li>
+</ul>
+
+<p>Including a sensible, relevant mention of each of the following gets a 1/2
+point to a max of 2 points:</p>
+<ul>
+  <li>CERT/CC</li>
+  <li>FIRST</li>
+  <li>ITSEC/Common criteria</li>
+  <li>Application layer gateway/stateful firewall</li>
+  <li>DMZ</li>
+  <li>Setting secure default options</li>
+  <li>Running a vulnerability/threat/risk analysis</li>
+</ul>
+
+<p>The remaining 2 points are available if they've done much better than
+required on some part of the answer.</p>
+
+<p>An example of the description of SQL slammer from CERT-2003-04 and related
+material is below. I would not expect the same level of detail, but all major
+points should be mentioned.</p>
+
+<p>The vulnerability:</p>
+
+<blockquote>
+  The SQL Server Resolution Service (SSRS) was introduced in Microsoft SQL
+  Server 2000 to provide referral services for multiple server instances
+  running on the same machine. The service listens for requests on UDP port
+  1434 and returns the IP address and port number of the SQL server instance
+  that provides access to the requested database. The SSRS contains a stack
+  buffer overflow that allows an attacker to execute arbitrary code by
+  sending a crafted request to port 1434/udp. The code within such a request
+  will be executed by the server host with the privileges of the SQL Server
+  service account.</blockquote>
+
+<p>The exploit:</p>
+
+<blockquote>
+  <p>The propagation of this malicious code has caused varied levels of
+  network degradation across the Internet and the compromise of vulnerable
+  machines.</p>
+
+  <p>The worm targeting SQL Server computers is self-propagating malicious
+  code that exploits the vulnerability described in VU#484891
+  (CAN-2002-0649). This vulnerability allows for the execution of arbitrary
+  code on the SQL Server computer due to a stack buffer overflow. Once the
+  worm compromises a machine, it will try to propagate itself. The worm will
+  craft packets of 376-bytes and send them to randomly chosen IP addresses on
+  port 1434/udp. If the packet is sent to a vulnerable machine, this victim
+  machine will become infected and will also begin to propagate. Beyond the
+  scanning activity for new hosts, the current variant of this worm has no
+  other payload. Activity of this worm is readily identifiable on a network
+  by the presence of 376-byte UDP packets. These packets will appear to be
+  originating from seemingly random IP addresses and destined for port
+  1434/udp.</p>
+
+  <p>Compromise by the worm confirms a system is vulnerable to allowing a
+  remote attacker to execute arbitrary code as the local SYSTEM user. It may
+  be possible for an attacker to subsequently leverage a local privilege
+  escalation exploit in order to gain Administrator access to the victim
+  system. The high volume of 1434/udp traffic generated by hosts infected
+  with the worm trying to find and compromise other SQL Server computers may
+  itself lead to performance issues (including possible denial-of-service
+  conditions) for Internet-connected hosts or for those computers on networks
+  with compromise hosts.</p>
+</blockquote>
+
+<p>The counter:</p>
+
+<blockquote>
+  <p>Use open source databases.</p>
+
+  <p>Apply a patch from Microsoft.</p>
+
+  <p>Ingress/Egress controls: The propagation of the worm requires a process
+  listening on port 1434/udp to exploit this vulnerability. This precondition
+  is obviously present in SQL Server 2000. However, not all applications
+  using MSDE 2000 listen to the network by default. Therefore, only certain
+  MSDE 2000-enabled applications may be vulnerable. Ingress/egress filtering
+  The following steps are only effective in limiting the damage that can be
+  done by systems already infected with the worm. They provide no protection
+  against the initial infection of systems. As a result, these steps are only
+  recommended in addition to the preventative steps outlined above. Ingress
+  filtering manages the flow of traffic as it enters a network under your
+  administrative control. Servers are typically the only machines that need
+  to accept inbound traffic from the public Internet. In the network usage
+  policy of many sites, external hosts are only permitted to initiate inbound
+  traffic to machines that provide public services on specific ports. Thus,
+  ingress filtering should be performed at the border to prohibit externally
+  initiated inbound traffic to non-authorized services. Egress filtering
+  manages the flow of traffic as it leaves a network under your
+  administrative control. There is typically limited need for machines
+  providing public services to initiate outbound connections to the Internet.
+  In the case of this worm, employing ingress and egress filtering can help
+  prevent compromised systems on your network from attacking systems
+  elsewhere. Blocking UDP datagrams with both source or destination ports
+  1434 from entering or leaving your network reduces the risk of external
+  infected systems communicating with infected hosts inside your network.</p>
+</blockquote>
+
+<h1>Question 2. </h1>
+
+<h3>Alice's company is a medium-sized enterprise (500 employees) selling both
+digital and tangible goods. Alice is setting up a secure commerce site for
+the company. For various reasons she requires that her company physically
+host all of the computer systems involved so there will be no outsourcing of
+primary systems to e.g. a data centre. Alice is however concerned about her
+and her customers' security and privacy. Alice's company already have a LAN
+for internal use and also allow remote access for Alice and her sales staff.
+Alice is also concerned to secure this remote access. Finally, Alice is also
+worried that one of her staff might be accessing materials that would bring
+the company into disrepute were it to be known, so she would like to be able
+to control, or at least monitor, for such undesirable behaviour.</h3>
+
+<h2>2a. Outline an architecture for Alice's network, emphasising how each
+component affects the overall security of the system.</h2>
+
+<p>Marking scheme: 15 points available</p>
+
+<p>Overall clarity and correctness: 3 points.</p>
+
+<p>For a sensible network diagram: 3 points available. The answer should
+include a diagram showing the main hosts and network connections similar to
+that shown below, but need not have as much detail in terms of addressing and
+should have more detail in terms of the hosts (see below). The network
+diagram should separate out the following hosts/components</p>
+
+<p><ul>
+  <li>DMZ dotted line</li>
+  <li>Firewall</li>
+  <li>Split-DNS</li>
+  <li>Mail server</li>
+  <li>Web server</li>
+  <li>"Commerce" server</li>
+  <li>"Payments" server</li>
+  <li>Database server</li>
+</ul>
+</p>
+
+<p></p>
+
+<p><img src="mailserver_dmz.gif" /></p>
+
+<p></p>
+
+<p>For including each of the following aspects within Alice's network, 1
+point, up to a max of 7:</p>
+<ul>
+  <li>Separate physical interfaces on the firewall for inner,DMZ and ISP
+    connections</li>
+  <li>Having two different firewall "products" (possibly one simply using
+    ipchains) so as to be less likely to fall victim to one single
+    programming flaw</li>
+  <li>Keeping customer information on a separate DB host on the inner network
+    (or at least without direct access to the Internet)</li>
+  <li>Stating the type of traffiic filtering that should be put in place</li>
+  <li>Using a VPN for remote (and possibly 802.11) access</li>
+  <li>Having a RADIUS server check for e.g. VPN logins</li>
+  <li>Describing which traffic will be layered on top of SSL</li>
+  <li>SSL crypto accellerators may be used</li>
+  <li>Separating customer data to respect customer privacy (e.g. keeping CC#
+    information separate from customer browsing patterns)</li>
+  <li>Having a (monitored!) privacy policy</li>
+</ul>
+
+<p>2 additional points are available if the answer also describes additional
+major functional blocks in interesting levels of detail, for example:</p>
+<ul>
+  <li>Describing a backup scheme</li>
+  <li>Describing a disaster recovery scheme</li>
+  <li>Describing load balancing if mandating SSL crypto hardware and</li>
+</ul>
+
+<h2>2b) Describe how Alice's commerce site should process payments.</h2>
+
+<p>Marking scheme: 5 points available</p>
+
+<p>1 point: Describing how the transaction moves from browsing to purshasing
+(e.g. via a shopping basket) and how that turns on server-side SSL.</p>
+
+<p>1 point: Describing how CC# details are handled, and that tests are
+carried out (incl. shipping addr=billing addr for physical goods)</p>
+
+<p>1 point: Describing how CC payments are authorized, in multiple stages for
+physical goods (first quthorize, then ship, then get paid) and how digital
+goods are MOTO transactions</p>
+
+<p>1 point: Correct use of payments terms throughout: cardholder, merchant,
+acquiring bank, issuing bank</p>
+
+<p>1 additional point for overall clarity and correctness.</p>
+
+<h2>2c) Describe how you could alleviate Alice's concerns with respect to her
+staff's Internet browsing habits.</h2>
+
+<p>Marking scheme: 5 points available</p>
+
+<p>1 point for saying that various computing usage policies should be
+published to the employees</p>
+
+<p>1 point for providing details of such policies</p>
+
+<p>1 point for including URL blockers and incoming spam mail filters (i.e.
+for suggesting tehnical fixes on inbound traffic)</p>
+
+<p>1 point for suggesting that system adminstrators ought to occasionally
+check logs (e.g. outbound proxy access/error logs) and traffic statistics to
+spot unexpected usage patterns; (i.e. for suggesting that Alice's IT staff
+should be capable enough to solve/detect this one)</p>
+
+<p>1 additonal point for overall clarity and correctness, and also perhaps
+for mention of more complex in-&amp;out-bound content scanning technologies
+(e.g. carnivore like systems, products like porn-sweeper)</p>
+
+<h2>Question 3.</h2>
+
+<h2>3a) Outline a practical key management scheme (e.g. the SSL/TLS handshake
+or IPsec's IKEv2 or S/MIME), and name some of the advantages/pitfalls of your
+chosen scheme.</h2>
+
+<p>Marking scheme: 15 points available; for a complete description of one of
+SSL/TLS, IPsec or S/MIME key management to the level provided below: 7
+points; each obvious error is -1/2 point; 3 additional points for pros &amp;
+cons according the list below; 2 points are for overall correctness/clarity
+and 2 points for doing really well.</p>
+
+<p>The description below is the overview section from the (4-th) IKEv2
+draft:</p>
+
+<blockquote>
+  <pre>   3 IKE Protocol Overview
+
+   IP Security (IPsec) provides confidentiality, data integrity, access
+   control, and data source authentication to IP datagrams. These
+   services are provided by maintaining shared state between the source
+   and the sink of an IP datagram. This state defines, among other
+   things, the specific services provided to the datagram, which
+   cryptographic algorithms will be used to provide the services, and
+   the keys used as input to the cryptographic algorithms.
+
+   Establishing this shared state in a manual fashion does not scale
+   well.  Therefore a protocol to establish this state dynamically is
+   needed.  This memo describes such a protocol-- the Internet Key
+   Exchange (IKE).  This is version 2 of IKE. Version 1 of IKE was
+   defined in RFCs 2407, 2408, and 2409. This single document is
+   intended to replace all three of those RFCs.
+
+   IKE performs mutual authentication between two parties and
+   establishes an IKE security association that includes shared secret
+   information that can be used to efficiently establish SAs for ESP
+   (RFC 2406) and/or AH (RFC 2402).  It also negotiates use of IPcomp
+   (RFC 2393) in connection with an ESP and/or AH SA.  We call the IKE
+   SA an "IKE-SA". The SAs for ESP and/or AH that get set up through
+   that IKE-SA we call "CHILD-SA"s.
+
+   We call the first four messages establishing an IKE-SA a "phase 1"
+   exchange and subsequent IKE exchanges "phase 2", inheriting this
+   terminology from IKEv1. The phase 1 exchange establishes the IKE-SA
+   and the first CHILD-SA. In some scenarios, only a single CHILD-SA is
+   needed between the IPsec endpoints and therefore there would be no
+   phase 2 exchanges. Phase 2 exchanges MAY be used to establish
+   additional CHILD-SAs between the same authenticated pair of endpoints
+   and to perform housekeeping functions.  The phase 1 exchange consists
+   of two request/response pairs.  A phase 2 exchange is one
+   request/response pair, and can be used to create or delete a CHILD-
+   SA, rekey or delete the IKE-SA, or report information such as error
+   conditions.
+
+   IKE message flow always consists of a request followed by a response.
+   It is the responsibility of the requester to ensure reliability.  If
+   the response is not received within a timeout interval, the requester
+   MUST retransmit the request (or abandon the connection).
+
+   The first request/response of a phase 1 exchange negotiates security
+   parameters for the IKE-SA, sends nonces, and sends Diffie-Hellman
+   values. We call the initial exchange IKE_SA_INIT (request and
+   response).
+
+   The second request/response, which we'll call IKE_AUTH transmits
+   identities, proves knowledge of the secrets corresponding to the two
+   identities, and sets up an SA for the first (and often only) AH
+   and/or ESP CHILD-SA.
+
+   Phase 2 exchanges each consist of a single request/response pair. The
+   types of exchanges are CREATE_CHILD_SA (which creates a CHILD-SA), or
+   an Informational exchange which deletes an SA, reports error
+   conditions, or does other housekeeping.  All these messages require a
+   response. An informational message with no payloads is commonly used
+   as a check for liveness.
+
+   In the description that follows, we assume that no errors occur.
+   Modifications to the flow should errors occur are described in
+   section 4.
+
+3.1 Usage Scenarios
+
+   IKE is expected to be used to negotiate ESP and/or AH SAs in a number
+   of different scenarios, each with their own special requirements.
+
+3.1.1 Gateway to Gateway Tunnel
+
+                    +-+-+-+-+-+            +-+-+-+-+-+
+                    !         ! IPsec      !         !
+       Protected    !Tunnel   ! Tunnel     !Tunnel   !     Protected
+	   Subnet   ----!Endpoint !------------!Endpoint !---- Subnet
+                    !         !            !         !
+                    +-+-+-+-+-+            +-+-+-+-+-+
+
+                       Figure 1:  Firewall to Firewall Tunnel
+
+   In this scenario, neither endpoint of the IP connection implements
+   IPsec, but network nodes between them protect traffic for part of the
+   way. Protection is transparent to the endpoints, and depends on
+   ordinary routing sending packets through the tunnel endpoints for
+   processing. Each endpoint would announce the set of addresses
+   "behind" it, and packets would be sent in Tunnel Mode where the inner
+   IP header would contain the IP addresses of the actual endpoints.
+
+3.1.2 Endpoint to Endpoint Transport
+
+       +-+-+-+-+-+                                          +-+-+-+-+-+
+       !         !                 IPsec                    !         !
+       !Protected!                 Tunnel                   !Protected!
+	   !Endpoint !------------------------------------------!Endpoint !
+       !         !                                          !         !
+       +-+-+-+-+-+                                          +-+-+-+-+-+
+
+                       Figure 2:  Endpoint to Endpoint
+
+   In this scenario, both endpoints of the IP connection implement
+   IPsec. These endpoints may implement application layer access
+   controls based on the authenticated identities of the participants.
+   Transport mode will commonly be used with no inner IP header. If
+   there is an inner IP header, the inner addresses will be the same as
+   the outher addresses. A single pair of addresses will be negotiated
+   for packets to be sent over this SA.
+
+   It is possible in this scenario that one of the protected endpoints
+   will be behind a network address translation (NAT) node, in which
+   case the tunnelled packets will have to be UDP encapsulated so that
+   port numbers in the UDP headers can be used to identify individual
+   endpoints "behind" the NAT.
+
+3.1.3 Endpoint to Gateway Transport
+
+       +-+-+-+-+-+                          +-+-+-+-+-+
+       !         !         IPsec            !         !     Protected
+       !Protected!         Tunnel           !Tunnel   !     Subnet
+	   !Endpoint ! -------------------------!Endpoint ! ---- and/or
+       !         !                          !         !     Internet
+       +-+-+-+-+-+                          +-+-+-+-+-+
+
+                       Figure 3:  Endpoint to Gateway
+
+   In this scenario, a protected endpoint (typically a portable roaming
+   computer) connects back to its corporate network through an IPsec
+   protected tunnel. It might use this tunnel only to access information
+   on the corporate network or it might tunnel all of its traffic back
+   through the corporate network in order to take advantage of
+   protection provided by a corporate firewall against Internet based
+   attacks. In either case, the protected endpoint will want an IP
+   address associated with the gateway so that packets returned to it
+   will go to the gateway and be tunnelled back. This IP address may be
+   static or may be dynamically allocated by the gateway. In support of
+   the latter case, IKEv2 includes a mechanism for the initiator to
+   request an IP address owned by the gateway for use for the duration
+   of its SA.
+
+   In this scenario, packets will use tunnel mode. On each packet from
+   the protected endpoint, the outer IP header will contain the source
+   IP address associated with its current location (i.e. the address
+   that will get traffic routed to the endpoint directly) while the
+   inner IP header will contain the source IP address assigned by the
+   gateway (i.e. the address that will get traffic routed to the gateway
+   for forwarding to the endpoint). The outer destination address will
+   always be that of the gateway, while the inner destination address
+   will be the ultimate destination for the packet.
+
+   In this scenario, it is possible that the protected endpoint will be
+   behind a NAT. In that case, the IP address as seen by the gateway
+   will not be the same as the IP address sent by the protected
+   endpoint, and packets will have to be UDP encapsulated in order to be
+   routed properly.
+
+3.1.4 Other Scenarios
+
+   Other scenarios are possible, as are nested combinations of the
+   above.  One noteable example combines aspects of 3.1.1 and 3.1.3. A
+   subnet may make all external accesses through a remote gateway using
+   an IPsec tunnel, where the addresses on the subnet are routed to the
+   gateway by the rest of the Internet. An example would be someones
+   home network being virtually on the Internet with static IP addresses
+   even though connectivity is provided by an ISP that assigns a single
+   dynamically assigned IP address (where the static IP addresses and an
+   IPsec relay is provided by a third party located elsewhere).
+   </pre>
+</blockquote>
+
+<p></p>
+
+<h2>3b) Describe how key agreement (as in Diffie-Hellman) and key transport
+(as in RSA) work, and when one might be better suited for use than the
+other.</h2>
+
+<p>Marking scheme: 5 points available</p>
+
+<p>1 point for basic definitional stuff, e.g. saying that in D-H both parties
+contribute to the agreed key, whereas with RSA key transport the key is
+simply wrapped using the recipient public key.</p>
+
+<p>Up to 2.5 points for good descriptions of how D-H and/or RSA actually
+work, ideally a the level of including g^a mod p in the D-H description and
+M^e mod n and e.d=1 mod phi(n) in the RSA description.</p>
+
+<p>1/2 point for each correct mention of one of the list items below up to a
+total of 1.5 points:</p>
+<ul>
+  <li>D-H is better if you need perfect forward secrecy (PFS)</li>
+  <li>For RSA sender needs no asymmetric keying material</li>
+  <li>D-H E-E, E-S, S-S variants all have different properties - calling out
+    any such distinguishing property is worth a 1/2</li>
+  <li>Saying the these are the same wrt PKI aspects is good</li>
+</ul>
+
+<h2>3c) Define the term "adaptive chosen ciphertext attack" and briefly
+outline how the Bleichenbacher attack against PKCS#1 works (note: you do not
+need to supply the detail of the algorithm for the attack). Explain why
+SSL/TLS implementations are more vulnerable to this attack compared to most
+applications that use S/MIME.</h2>
+
+<p>Marking scheme: 5 points available: 1 for a good definition; 3 for
+explaining bleichenbacher correctly; 1 for the last bit. If someone gives a
+really complete description of bleichenbacher then they get an extra 2 points
+added on somewhere.</p>
+
+<p>An "adaptive chosed ciphertext attack" is where the attacker iteratively
+gets the private key holder to work on its behalf as an oracle, that is,
+where the private key holder uses the private key on some (ciphertext) value
+chosen by the attacker, and the attacker gets to see the results of that
+operation (or information about the result), such that the attacker can take
+the outcome at round n into account when choosing the ciphertext for roung
+n+1</p>
+
+<p>Bleichenbacher's attack is one of these, directed against PKCS#1 blocktype
+2 padding of (not only, but most importantly) RSA encryption. Noticing that
+C'=C*(S^e) mod N has a reasonable (about 1 in 2^16) chance of resulting in
+PKCS#1 conformant padding (mainly that means starting with '0002'H). The
+origiinal message M (as a number) was PKCS#1 conformant which means that we
+know (by definition) that if B=2^(l-16), where l is the bit length of the RSA
+modulus, then 2B &lt;= M &lt; 3B, which can be seen if you think of the block
+diagram as a number. Similarly, if we know that the decryption of C' (M') is
+conformant, then M is also in that range. Now since C'=C*(S^e) that means
+that M'=M*S (droppong the "mod" operators and remembering the definition of
+RSA, where C=M^e). So now that attacker knows S, and that M and M*S are
+within the [2B,3B) range. Next we note (and I don't require a description of
+the detail) that by iterating this oracle operator with successive Si values,
+the attacker can narrow the range at each iteration, with the overall result
+that about a million operations are required to find M for an 1024 bit RSA
+key.</p>
+
+<p>SSL/TLS implementations are more vulnerable because they're generally
+within server code and can be called many times whereas S/MIME is mostly used
+at clients where there's usually a warm-body who'd notice a million
+messages.</p>
+</body>
+</html>

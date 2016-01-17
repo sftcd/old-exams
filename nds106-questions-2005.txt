@@ -1,0 +1,38 @@
+
+1. a) Describe how you would handle the following scenarios. For each case, provide your reasons.
+	- you are a CS reserarcher and discover a buffer overrun vulnerability in a standard 
+	  web browser (5)
+	- you are a programmer and discover, and validate an exploit for, a vulnerability in
+	  your main competitor's product (5)
+	- you are a system administrator in a large enterprise and hear about a vulnerability 
+	  for which there is no patch, and which potentially affects many of your server systems (5)
+   b) You are a working as a software architect in a small near start-up and are responsible
+      for developing their software engineering standards and practices (e.g. coding
+	  standards, source code control etc.). Describe how you would handle security issues
+	  as part of this. (10)
+
+2. You are a consultant who has been tasked to develop a next generation voting and
+   polling scheme for a popular reality TV show. This system is one of the main 
+   revenue earner's which pays for the show. At peak usage, there may be millions
+   of votes in a 24-hour period. The voting process continues for a number of weeks
+   as contestants are eliminated. While there are no prizes for the voters, 
+   substantial sums of money are being bet (online and off-line) as to the outcomes
+   The programme-maker has no relationship with the bookmakers taking bets on 
+   the outcomes.
+
+   - Describe the main threats to and the set of security requirements which
+	 you would have the system meet. [Note: focus on requirements here, not on
+	 technologies.] (10)
+   - Provide an outline design for the entire system, emphasising the security
+     model and components affecting security. (10)
+   - Describe how you would test the security of the implemented system, prior
+     to its being used for the show (5)
+   
+
+3. Describe in detail how scaling issues affect a practical key management scheme (e.g.
+   Kerberos, S/MIME, IKE, or TLS). (15)
+   Compare the use of cryptographic primitives (e.g. signing, MACing, digesting) in your
+   chosen scheme with another such scheme. (10)
+
+
+
